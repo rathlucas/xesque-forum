@@ -36,7 +36,7 @@ export default function LoginForm(props: LoginFormProps) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await axios.post("http://xesque-forum-backend-production.up.railway.app/auth/login", values);
+      const response = await axios.post("https://xesque-forum-backend-production.up.railway.app/auth/login", values);
       if (response.status === 200) {
         router.push("/home")
       }
