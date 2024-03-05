@@ -41,7 +41,7 @@ public class SecurityConfiguration {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost"));
+        config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost", "https://xesque-forum.vercel.app"));
         config.setAllowedMethods(Arrays.asList("GET","POST", "OPTIONS", "PUT", "DELETE"));
         config.applyPermitDefaultValues();
 
