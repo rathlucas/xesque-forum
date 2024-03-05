@@ -8,11 +8,11 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@Getter
 @Setter
 @Document
 @AllArgsConstructor
@@ -21,9 +21,11 @@ public class UserEntity implements UserDetails {
     @Id
     private String id;
 
+    @Field("username")
     @Indexed(unique = true)
     private String username;
 
+    @Getter
     @Indexed(unique = true)
     private String email;
 
@@ -63,4 +65,5 @@ public class UserEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
