@@ -38,7 +38,7 @@ export default function RegisterForm(props: RegisterFormProps) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await axios.post("http://localhost:8080/auth/register", values)
+      const response = await axios.post("http://xesque-forum-backend-production.up.railway.app/auth/register", values)
       console.log(response.data)
     } catch (e) {
       console.error("Error:", e)
