@@ -28,6 +28,7 @@ public class MongoUserRepository implements UserRepository {
         Criteria criteria = Criteria.where("username").is(username);
         Query query = new Query().addCriteria(criteria);
         return template.find(query, UserEntity.class).single().cast(UserDetails.class)
-                .doOnSuccess(res -> log.info("{}", res));
+                .doOnSuccess(res -> log.info("{}", res))
+                .doOnError(error -> log.error("{}", error.getMessage()));
     }
 }

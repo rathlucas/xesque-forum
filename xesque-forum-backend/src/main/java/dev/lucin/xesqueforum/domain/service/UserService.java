@@ -30,7 +30,7 @@ public class UserService {
                 .switchIfEmpty(Mono.error(new NotFoundException("Usuário não encontrado")));
 
         return user.flatMap(val -> {
-            Authentication auth = new UsernamePasswordAuthenticationToken(val.getUsername(), request.getPassword());
+            Authentication auth = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
             return authenticationManager.authenticate(auth).then();
         });
     }
