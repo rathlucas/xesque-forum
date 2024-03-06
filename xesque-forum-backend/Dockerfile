@@ -8,13 +8,21 @@ microdnf clean all
 
 WORKDIR /app
 
+RUN \
+    # Install SDKMAN
+    curl -s "https://get.sdkman.io" | bash; \
+    source "$HOME/.sdkman/bin/sdkman-init.sh"; \
+    sdk install maven; \
+    # Install GraalVM Native Image
+    gu install native-image; \
+
+RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && mvn --version
+
 # Copy pom.xml and download dependencies
 COPY pom.xml .
-RUN mvn dependency:go-offline
+RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && mvn -B clean package -P native --no-transfer-progress
 
 COPY . .
-
-RUN mvn -P native -P production native:compile
 
 # Second stage: Lightweight debian-slim image
 FROM debian:bookworm-slim
