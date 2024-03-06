@@ -10,16 +10,15 @@ WORKDIR /app
 
 RUN \
     curl -s "https://get.sdkman.io" | bash; \
-    source "$HOME/.sdkman/bin/sdkman-init.sh"; \
     source ".bashrc"; \
     sdk install maven; \
     gu install native-image; \
 
-RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && mvn --version
+RUN mvn --version
 
 # Copy pom.xml and download dependencies
 COPY pom.xml .
-RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && mvn -B clean package -P native --no-transfer-progress
+RUN mvn -B clean package -P native --no-transfer-progress
 
 COPY . .
 
