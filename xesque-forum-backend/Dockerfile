@@ -10,7 +10,7 @@ WORKDIR /app
 
 RUN \
     curl -s "https://get.sdkman.io" | bash; \
-    source "bashrc"; \
+    source "/home/.bashrc"; \
     sdk install maven; \
     gu install native-image; \
 
