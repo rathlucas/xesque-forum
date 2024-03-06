@@ -9,11 +9,10 @@ microdnf clean all
 WORKDIR /app
 
 RUN \
-    # Install SDKMAN
     curl -s "https://get.sdkman.io" | bash; \
     source "$HOME/.sdkman/bin/sdkman-init.sh"; \
+    source ".bashrc"; \
     sdk install maven; \
-    # Install GraalVM Native Image
     gu install native-image; \
 
 RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && mvn --version
