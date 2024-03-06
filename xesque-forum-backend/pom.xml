@@ -10,7 +10,7 @@
     </parent>
     <groupId>dev.lucin</groupId>
     <artifactId>xesque-forum</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2</version>
     <name>xesque-forum</name>
     <description>xesque-forum</description>
     <properties>
@@ -63,6 +63,10 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.graalvm.buildtools</groupId>
+                <artifactId>native-maven-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

@@ -7,7 +7,8 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {Input} from "@/components/ui/input";
 import {Separator} from "@/components/ui/separator";
 import {Button} from "@/components/ui/button";
-import axios from "axios";
+import {api} from "@/api/AxiosConfig";
+import {useRouter} from "next/navigation";
 
 interface RegisterFormProps {
 
@@ -26,6 +27,7 @@ const formSchema = z.object({
 })
 
 export default function RegisterForm(props: RegisterFormProps) {
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,8 +40,10 @@ export default function RegisterForm(props: RegisterFormProps) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await axios.post("https://xesque-forum-backend-production.up.railway.app/auth/register", values)
-      console.log(response.data)
+      const res = await api.post("/auth/register", values)
+      if (res.status === 201) {
+        router.push("/")
+      }
     } catch (e) {
       console.error("Error:", e)
     }
@@ -56,10 +60,10 @@ export default function RegisterForm(props: RegisterFormProps) {
                 control={form.control}
                 name={"username"}
                 render={({field}) => (
-                    <FormItem className={"flex flex-col pr-64"}>
+                    <FormItem className={"flex flex-col"}>
                       <FormLabel className={"text-primary-foreground"}>Nome de Usuário</FormLabel>
                       <FormControl>
-                        <Input placeholder="shadcn" {...field} />
+                        <Input {...field} />
                       </FormControl>
                     </FormItem>
                 )}/>
@@ -67,7 +71,7 @@ export default function RegisterForm(props: RegisterFormProps) {
                 control={form.control}
                 name={"email"}
                 render={({field}) => (
-                    <FormItem className={"flex flex-col pr-64"}>
+                    <FormItem className={"flex flex-col"}>
                       <FormLabel className={"text-primary-foreground"}>Email</FormLabel>
                       <FormControl>
                         <Input {...field} />
@@ -78,14 +82,14 @@ export default function RegisterForm(props: RegisterFormProps) {
                 control={form.control}
                 name={"password"}
                 render={({field}) => (
-                    <FormItem className={"flex flex-col pr-64"}>
+                    <FormItem className={"flex flex-col"}>
                       <FormLabel className={"text-primary-foreground"}>Senha</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input type={"password"} {...field} />
                       </FormControl>
                     </FormItem>
                 )}/>
-            <Button type={"submit"}>Login</Button>
+            <Button type={"submit"}>Registre-se</Button>
           </form>
         </Form>
       </div>

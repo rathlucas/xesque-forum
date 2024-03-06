@@ -8,8 +8,8 @@ import {Input} from "@/components/ui/input";
 import {Separator} from "@/components/ui/separator";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
-import axios from "axios";
 import {useRouter} from "next/navigation";
+import {api} from "@/api/AxiosConfig";
 
 interface LoginFormProps {
 }
@@ -36,7 +36,7 @@ export default function LoginForm(props: LoginFormProps) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await axios.post("https://xesque-forum-backend-production.up.railway.app/auth/login", values);
+      const response = await api.post("/auth/login", values)
       if (response.status === 200) {
         router.push("/home")
       }
@@ -56,7 +56,7 @@ export default function LoginForm(props: LoginFormProps) {
                 control={form.control}
                 name={"username"}
                 render={({field}) => (
-                    <FormItem className={"flex flex-col pr-64"}>
+                    <FormItem className={"flex flex-col"}>
                       <FormLabel className={"text-primary-foreground"}>Nome de Usuário</FormLabel>
                       <FormControl>
                         <Input placeholder="shadcn" {...field} />
@@ -67,10 +67,10 @@ export default function LoginForm(props: LoginFormProps) {
                 control={form.control}
                 name={"password"}
                 render={({field}) => (
-                    <FormItem className={"flex flex-col pr-64"}>
+                    <FormItem className={"flex flex-col"}>
                       <FormLabel className={"text-primary-foreground"}>Senha</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input type={"password"} {...field} />
                       </FormControl>
                     </FormItem>
                 )}/>

@@ -25,3 +25,7 @@ G
 src/app/page.tsx,3/3/3393394e21dbac7686e91ad17c5283fb052d67f3
 5
 texto,e/a/ea631551f5569f612dd702b900c596c2a99c0dfd
+4
+.env,3/c/3c84dcdc6bbe3d7817c49dcdc327b926fea1808a
+G
+src/api/AxiosConfig.tsx,7/4/7481f6a323da3a5806c37244a0cc064baffea40e
