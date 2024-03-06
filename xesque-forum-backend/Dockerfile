@@ -1,6 +1,11 @@
 # First stage: JDK with GraalVM
 FROM ghcr.io/graalvm/jdk-community:17 AS build
 
+# Update package lists and Install Maven
+RUN microdnf update -y && \
+microdnf install -y unzip gcc glibc-devel zlib-devel libstdc++-devel gcc-c++ && \
+microdnf clean all
+
 WORKDIR /app
 
 RUN \
