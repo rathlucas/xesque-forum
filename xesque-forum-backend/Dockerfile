@@ -12,7 +12,7 @@ RUN \
     curl -s "https://get.sdkman.io" | bash; \
     source "/home/.bashrc"; \
     sdk install maven; \
-    gu install native-image; \
+    gu install native-image;
 
 RUN mvn --version
 
