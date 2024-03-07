@@ -10,7 +10,7 @@
     </parent>
     <groupId>dev.lucin</groupId>
     <artifactId>xesque-forum</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <name>xesque-forum</name>
     <description>xesque-forum</description>
     <properties>
