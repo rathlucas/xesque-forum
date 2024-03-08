@@ -1,11 +1,13 @@
 package dev.lucin.xesqueforum.domain.service;
 
+import dev.lucin.xesqueforum.application.util.JwtUtil;
 import dev.lucin.xesqueforum.domain.entity.UserEntity;
 import dev.lucin.xesqueforum.domain.mapper.UserMapper;
 import dev.lucin.xesqueforum.domain.model.request.LoginRequest;
 import dev.lucin.xesqueforum.domain.model.request.RegisterRequest;
 import dev.lucin.xesqueforum.infra.repository.UserRepository;
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -46,6 +48,9 @@ class UserServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    @Mock
+    private JwtUtil jwtUtil;
+
     @Test
     void givenValidCredentials_whenLoggingIn_thenShouldSuccesfullyGetUserFromDb() {
         var user = new User("user", "password", List.of());
@@ -55,13 +60,16 @@ class UserServiceTest {
                 .findByUsername("user"))
                 .thenReturn(Mono.just(user));
 
+        when(jwtUtil.generateToken(any(UsernamePasswordAuthenticationToken.class)))
+                .thenReturn("token");
+
         when(authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken("user", "password")))
-                .thenReturn(Mono.empty());
+                .thenReturn(Mono.just(new UsernamePasswordAuthenticationToken("user", "password")));
 
         StepVerifier.create(userService.login(loginRequest))
-                .expectComplete()
-                .verify();
+                .assertNext(Assertions::assertNotNull)
+                .verifyComplete();
 
         verify(userDetailsService, times(1)).findByUsername(anyString());
         verify(authenticationManager,times(1)).authenticate(any(UsernamePasswordAuthenticationToken.class));

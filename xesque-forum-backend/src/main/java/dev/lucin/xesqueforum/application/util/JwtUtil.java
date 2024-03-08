@@ -11,10 +11,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Objects;
 import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,14 +32,13 @@ public class JwtUtil {
 
     private static final String AUTHORITIES_KEY = "roles";
 
-    @Value("${jwt.secret}")
-    private String key;
-
     private SecretKey secretKey ;
+
+    private final Environment env;
 
     @PostConstruct
     public void init() {
-        var secret = Base64.getEncoder().encodeToString(key.getBytes());
+        var secret = Base64.getEncoder().encodeToString(Objects.requireNonNull(env.getProperty("jwt.secret")).getBytes());
         secretKey  = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
