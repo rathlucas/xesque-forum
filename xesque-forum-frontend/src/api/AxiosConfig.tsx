@@ -3,10 +3,11 @@ import axios from "axios";
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   headers: {
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
+    Authorization: `Bearer `,
   },
   timeout: 7000,
-})
+});
 
 api.interceptors.response.use((res) => {
   if (res.status === 401) {
@@ -14,6 +15,6 @@ api.interceptors.response.use((res) => {
     return res;
   }
   return res;
-})
+});
 
-export {api}
+export { api };

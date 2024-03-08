@@ -20,10 +20,10 @@ public class AuthController {
 
     private final UserService userService;
 
-    @PostMapping("/login")
-    public ResponseEntity<Mono<Void>> login(
-            @RequestBody @Valid LoginRequest request) {
 
+    @PostMapping("/login")
+    public ResponseEntity<Mono<String>> login(
+            @RequestBody @Valid LoginRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(userService.login(request));
     }
