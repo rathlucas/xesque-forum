@@ -55,7 +55,7 @@ export default function CreatePostForm() {
                           block w-full sm:text-sm border-gray-300 rounded-md"/>
                 </FormControl>
                 <p className={"text-sm text-destructive"}>
-                  {form?.formState?.errors?.title?.message}
+                  {form?.formState?.errors?.content?.message}
                 </p>
               </FormItem>
           )}/>
