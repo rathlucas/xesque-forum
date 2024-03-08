@@ -1,3 +1,6 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import {
   Table,
   TableBody,
@@ -9,6 +12,8 @@ import {
 import { tableData } from "./TableData";
 
 export default function HomeTable() {
+  const router = useRouter();
+
   return (
     <Table>
       <TableHeader>
@@ -25,8 +30,12 @@ export default function HomeTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {tableData.map((data) => (
-          <TableRow key={data.name}>
+        {tableData.map((data, key) => (
+          <TableRow
+            onClick={() => router.push(data.href)}
+            key={data.name}
+            className="cursor-pointer hover:bg-gray-100"
+          >
             <TableCell>{data.name}</TableCell>
             <TableCell>{data.description}</TableCell>
             <TableCell>{data.lastUpdate}</TableCell>
