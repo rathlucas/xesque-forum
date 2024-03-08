@@ -1,5 +1,6 @@
 package dev.lucin.xesqueforum.domain.service;
 
+import dev.lucin.xesqueforum.application.util.JwtUtil;
 import dev.lucin.xesqueforum.domain.exception.NotFoundException;
 import dev.lucin.xesqueforum.domain.mapper.UserMapper;
 import dev.lucin.xesqueforum.domain.model.request.LoginRequest;
@@ -23,15 +24,16 @@ public class UserService {
     private final ReactiveUserDetailsService userDetailsService;
     private final ReactiveAuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
-    public final Mono<Void> login(LoginRequest request) {
+    public final Mono<String> login(LoginRequest request) {
         var user = userDetailsService
                 .findByUsername(request.getUsername())
                 .switchIfEmpty(Mono.error(new NotFoundException("Usuário não encontrado")));
 
         return user.flatMap(val -> {
             Authentication auth = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
-            return authenticationManager.authenticate(auth).then();
+            return authenticationManager.authenticate(auth).map(jwtUtil::generateToken);
         });
     }
 
