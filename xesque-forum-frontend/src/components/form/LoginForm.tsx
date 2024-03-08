@@ -15,9 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { api } from "@/api/AxiosConfig";
-
-interface LoginFormProps {}
+import { onSubmit } from "@/app/login/actions";
 
 const formSchema = z.object({
   username: z.string().min(4, {
@@ -28,10 +26,12 @@ const formSchema = z.object({
   }),
 });
 
-export default function LoginForm(props: LoginFormProps) {
+export interface LoginFormSchema extends z.infer<typeof formSchema> {}
+
+export default function LoginForm() {
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<LoginFormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
@@ -39,16 +39,9 @@ export default function LoginForm(props: LoginFormProps) {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      const response = await api.post("/auth/login", values);
-      if (response.status === 200) {
-        router.push("/");
-      }
-    } catch (e) {
-      console.error("Error:", e);
-    }
-  }
+  const action: () => void = form.handleSubmit(async (data) => {
+    await onSubmit(data);
+  });
 
   return (
     <div className={"h-screen bg-green-600 p-10"}>
@@ -60,7 +53,7 @@ export default function LoginForm(props: LoginFormProps) {
         Realize o login para continuar
       </p>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className={"space-y-8"}>
+        <form action={action} className={"space-y-8"}>
           <FormField
             control={form.control}
             name={"username"}
