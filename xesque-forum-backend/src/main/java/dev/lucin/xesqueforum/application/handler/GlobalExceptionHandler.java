@@ -2,6 +2,8 @@ package dev.lucin.xesqueforum.application.handler;
 
 import dev.lucin.xesqueforum.application.exception.dto.ApiExceptionDTO;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +21,17 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Mono<ApiExceptionDTO>> handleWebExchangeBindException(WebExchangeBindException e) {
         log.error("WebExceptionException: {}", e.getLocalizedMessage());
         var error = ApiExceptionDTO.builder()
-                .message(e.getLocalizedMessage())
+                .message("Erro de validação")
                 .error(e.getStatusCode().toString().toUpperCase())
-                .details(new ArrayList<>())
+                .details(e.getBindingResult()
+                        .getFieldErrors()
+                        .stream()
+                        .map(f -> {
+                            Map<String, String> details = new HashMap<>();
+                            details.put("field", f.getField());
+                            details.put("message", f.getDefaultMessage());
+                            return details;
+                        }).toList())
                 .build();
 
         return ResponseEntity.status(e.getStatusCode()).body(Mono.just(error));
