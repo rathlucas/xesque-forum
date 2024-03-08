@@ -10,7 +10,6 @@ import {
   TableRow,
 } from "../ui/table";
 import { tableData } from "./TableData";
-import Link from "next/link";
 
 export default function HomeTable() {
   const router = useRouter();
