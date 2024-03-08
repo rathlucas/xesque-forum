@@ -28,4 +28,6 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
+      env:
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
       run: mvn -B package --file xesque-forum-backend/pom.xml
