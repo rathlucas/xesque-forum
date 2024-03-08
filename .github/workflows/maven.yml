@@ -18,9 +18,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
-    env:
-      JWT_SECRET: HoCoAKjs9eGOUBTfZYj1NtyHFJvD9GWh3aDUo1jzbBY=
       
     steps:
     - uses: actions/checkout@v3
