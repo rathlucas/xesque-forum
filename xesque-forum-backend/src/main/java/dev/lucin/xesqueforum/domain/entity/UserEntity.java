@@ -3,12 +3,15 @@ package dev.lucin.xesqueforum.domain.entity;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,6 +36,10 @@ public class UserEntity implements UserDetails {
     private final String password;
 
     private final Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+    @ReadOnlyProperty
+    @DocumentReference(lookup = "{'userId':?#{#self._id} }")
+    private final List<PostEntity> posts;
 
     private final LocalDateTime createdAt = LocalDateTime.now();
     private final LocalDateTime updatedAt = LocalDateTime.now();
