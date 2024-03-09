@@ -17,6 +17,7 @@
 /build
 
 # misc
+*.iml
 .DS_Store
 *.pem
 .idea
