@@ -1,12 +1,15 @@
 "use client";
 
+import 'md-editor-rt/lib/style.css';
+
+
 import {Form, FormControl, FormField, FormItem, FormLabel,} from "@/components/ui/form";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Input} from "@/components/ui/input";
-import {Textarea} from "@/components/ui/textarea";
 import SubmitPostButton from "@/components/button/SubmitPostButton";
+import {MdEditor} from "md-editor-rt";
 
 const formSchema = z.object({
   title: z.string().min(4, {
@@ -50,8 +53,17 @@ export default function CreatePostForm() {
               <FormItem>
                 <FormLabel htmlFor="content">Conteúdo</FormLabel>
                 <FormControl>
-                  <Textarea  {...field} rows={15} id="content" placeholder="Digite o conteúdo da postagem"
-                             className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500
+                  <MdEditor modelValue={field.value}
+                            onChange={field.onChange}
+                            language={"en-US"}
+                            placeholder="Digite o conteúdo da postagem"
+                            toolbarsExclude={['pageFullscreen',
+                              'fullscreen',
+                              'preview',
+                              'htmlPreview',
+                              'catalog',
+                              'github']}
+                            className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500
                           block w-full sm:text-sm border-gray-300 rounded-md"/>
                 </FormControl>
                 <p className={"text-sm text-destructive"}>
