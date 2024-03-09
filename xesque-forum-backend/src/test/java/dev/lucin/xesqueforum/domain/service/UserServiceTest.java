@@ -72,13 +72,23 @@ class UserServiceTest {
                 .verifyComplete();
 
         verify(userDetailsService, times(1)).findByUsername(anyString());
-        verify(authenticationManager,times(1)).authenticate(any(UsernamePasswordAuthenticationToken.class));
+        verify(authenticationManager, times(1)).authenticate(any(UsernamePasswordAuthenticationToken.class));
     }
 
     @Test
     void givenValidInformation_whenRegisteringUser_ShouldSuccessfullySaveToDb() {
-        var registerRequest = new RegisterRequest("user","mail@mail.com", "password");
-        var userEntity = new UserEntity(null, "user", "mail@mail.com", "password");
+        var registerRequest = new RegisterRequest("user", "mail@mail.com", "password");
+        var userEntity = UserEntity.builder()
+                .id(null)
+                .username("user")
+                .email("mail@mail.com")
+                .password("password")
+                .build();
+
+        when(passwordEncoder.encode("password"))
+                .thenReturn("encodedPassword");
+
+        when(userMapper.toEntity(registerRequest)).thenReturn(userEntity);
 
         when(passwordEncoder.encode("password"))
                 .thenReturn("encodedPassword");

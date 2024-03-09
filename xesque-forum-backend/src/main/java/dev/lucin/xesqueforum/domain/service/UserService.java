@@ -1,6 +1,7 @@
 package dev.lucin.xesqueforum.domain.service;
 
 import dev.lucin.xesqueforum.application.util.JwtUtil;
+import dev.lucin.xesqueforum.domain.entity.UserEntity;
 import dev.lucin.xesqueforum.domain.exception.NotFoundException;
 import dev.lucin.xesqueforum.domain.mapper.UserMapper;
 import dev.lucin.xesqueforum.domain.model.request.LoginRequest;
@@ -10,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,7 +40,11 @@ public class UserService {
     }
 
     public final Mono<Void> register(RegisterRequest request) {
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
         request.setPassword(passwordEncoder.encode(request.getPassword()));
-        return userRepository.save(mapper.toEntity(request));
+
+        UserEntity user = mapper.toEntity(request);
+        user.addAuthority(authority);
+        return userRepository.save(user);
     }
 }

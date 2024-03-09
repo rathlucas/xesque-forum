@@ -1,11 +1,11 @@
 package dev.lucin.xesqueforum.domain.entity;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,38 +14,36 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@Setter
+@Getter
+@Builder
 @Document
 @AllArgsConstructor
-@NoArgsConstructor
 public class UserEntity implements UserDetails {
 
     @Id
-    private String id;
+    private final String id;
 
     @Field("username")
     @Indexed(unique = true)
-    private String username;
+    private final String username;
 
-    @Getter
     @Indexed(unique = true)
-    private String email;
+    private final String email;
 
-    private String password;
+    private final String password;
+
+    private final Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+    private final LocalDateTime createdAt = LocalDateTime.now();
+    private final LocalDateTime updatedAt = LocalDateTime.now();
+
+    public void addAuthority(SimpleGrantedAuthority authority) {
+        authorities.add(authority);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-    }
-
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.username;
+        return authorities;
     }
 
     @Override
